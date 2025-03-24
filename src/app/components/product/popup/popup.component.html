@@ -1,0 +1,35 @@
+<form [formGroup]="myform" (ngSubmit)="createProduct()">
+  <h1 mat-dialog-title>{{inputdata.title}}</h1>
+  <div mat-dialog-content>
+    <mat-form-field appearance="fill">
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="title" required>
+      <mat-error *ngIf="myform.get('title')?.invalid">Título es requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="description" required></textarea>
+      <mat-error *ngIf="myform.get('description')?.invalid">Descripción es requerida</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Precio</mat-label>
+      <input matInput formControlName="price" type="number" required>
+      <mat-error *ngIf="myform.get('price')?.invalid">Precio debe ser un número positivo</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre de Categoría</mat-label>
+      <input matInput formControlName="category" required>
+      <mat-error *ngIf="myform.get('category')?.invalid">Nombre de categoría es requerido</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-raised-button type="submit" color="primary" [disabled]="myform.invalid">
+      {{inputdata.code > 0 ? 'Actualizar' : 'Crear'}}
+    </button>
+    <button mat-raised-button type="button" (click)="closepopup()" color="warn">Cancelar</button>
+  </div>
+</form>

@@ -2,12 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatBadgeModule } from '@angular/material/badge';
+import { MaterialModule } from '../../material.module';
 import { ProductListComponent } from '../../product/product-list/product-list.component';
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../models/product.model';
@@ -24,12 +19,7 @@ interface MenuItem {
   imports: [
     RouterLink,
     CommonModule,
-    MatListModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatBadgeModule,
-    MatSidenavModule,
+    MaterialModule,
     ProductListComponent,
     RouterOutlet,
   ],

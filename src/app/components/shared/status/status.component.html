@@ -1,12 +1,11 @@
-<!-- <div [ngClass]="statusColor" class="status-container">
-  <span class="status-circle"></span>
-  {{ data }}
-</div> -->
-
-<div [ngClass]="{
-  'status-barato': status === 'barato',
-  'status-medio': status === 'medio',
-  'status-caro': status === 'caro'
-}">
-  {{ status }}
-</div>
+<mat-chip 
+  [class]="statusInfo.colorClass"
+  [matTooltip]="'Rango de precio: ' + statusInfo.text"
+  selected>
+  @if (showIcon) {
+    <mat-icon>{{ statusInfo.icon }}</mat-icon>
+  }
+  @if (showText) {
+    <span>{{ statusInfo.text }}</span>
+  }
+</mat-chip>

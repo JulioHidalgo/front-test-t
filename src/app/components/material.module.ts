@@ -19,6 +19,11 @@ import {MatNativeDateModule} from "@angular/material/core"
 import {MatRadioModule} from "@angular/material/radio"
 import {MatCheckboxModule} from "@angular/material/checkbox"
 import {MatDialogModule} from "@angular/material/dialog"
+import {MatFormFieldModule} from "@angular/material/form-field"
+import {MatSnackBarModule} from "@angular/material/snack-bar"
+import { MatChipsModule } from '@angular/material/chips'
+import { MatTooltipModule } from '@angular/material/tooltip'
+
 
 @NgModule({
 exports:[
@@ -41,7 +46,14 @@ exports:[
     MatNativeDateModule,
     MatRadioModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatFormFieldModule,
+    MatSnackBarModule,
+    MatChipsModule,
+    MatTooltipModule,
+    
+    
+
 ]
 })
 export class MaterialModule{}

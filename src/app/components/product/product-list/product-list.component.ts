@@ -1,20 +1,16 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../models/product.model';
-// import { StatusComponent } from '../../shared/status/status.component';
 import { RouterModule } from '@angular/router';
-import { MatTableModule } from '@angular/material/table';
+import { MaterialModule } from '../../material.module';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import {MatPaginator} from "@angular/material/paginator";
-import {MatCardModule} from "@angular/material/card";
+import { PopupComponent } from '../popup/popup.component';
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { StatusComponent } from '../../shared/status/status.component';
 
-// import { PopupComponent } from '../popup/popup.component';
+
 
 @Component({
   selector: 'app-product-list',
@@ -23,34 +19,31 @@ import {MatCardModule} from "@angular/material/card";
   standalone: true,
   imports: [
     CommonModule, 
-    // StatusComponent, 
     RouterModule, 
-    CommonModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    MatPaginator,
-    MatCardModule,
-                   ],
+    MaterialModule,
+    ReactiveFormsModule,
+    StatusComponent,
+    
+  ],
 })
 export class ProductListComponent implements OnInit {
-
-  productlist !: Product[];
+  productlist!: Product[];
   dataSource: any;
   displayedColumns: string[] = ["title", "description", "price", "category", "status", "actions"];
   @Input() products: Product[] = [];
   searchText: string = '';
-  @ViewChild(MatPaginator) paginator !: MatPaginator;
-  @ViewChild(MatSort) sort !: MatSort;
+  @ViewChild(PopupComponent) popup!: PopupComponent;
+  
 
-addproduct() {
-throw new Error('Method not implemented.');
-}
+  form: FormGroup;
+  private fb = inject(FormBuilder); 
+  http: any;
 
   constructor(private productService: ProductService, private dialog: MatDialog) {
     this.loadProducts();
+    this.form = this.fb.group({
+      search: ['']
+    });
   }
 
   ngOnInit(): void {
@@ -68,20 +61,11 @@ throw new Error('Method not implemented.');
     });
   }
 
-  editProduct(productId: number): void {
-    // this.productService.putProduct(productId).subscribe({
-    //   next: () => {
-    //     this.products = this.products.filter(product => product.id !== productId);
-    //     console.log('Producto editado correctamente');
-    //   },
-    //   error: (err: any) => {
-    //     console.error('Error editando producto', err);
-    //   }
-    // });
-    // console.log('Edit product with ID:', productId);
-
+  editProduct(productId: number, productData?: any): Observable<any> {
+    return this.http.put(`api/products/${productId}`, productData);
   }
 
+  
   deleteProduct(productId: number): void {
     if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
       this.productService.deleteProduct(productId).subscribe({
@@ -95,17 +79,22 @@ throw new Error('Method not implemented.');
       });
     }
   }
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.searchText = filterValue;
-  }
 
   Filterchange(data: Event) {
     const value = (data.target as HTMLInputElement).value;
     this.dataSource.filter = value;
   }
 
-  Openpopup(code: any, title: any,component:any) {
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.searchText = filterValue;
+  }
+
+  addproduct() {
+    this.Openpopup(0, 'Agregar Producto', PopupComponent);
+  }
+
+  Openpopup(code: any, title: any, component: any) {
     var _popup = this.dialog.open(component, {
       width: '40%',
       enterAnimationDuration: '1000ms',
@@ -115,9 +104,10 @@ throw new Error('Method not implemented.');
         code: code
       }
     });
-    _popup.afterClosed().subscribe(item => {
-      // console.log(item)
+    _popup.afterClosed().subscribe(() => {
       this.loadProducts();
-    })
+    });
   }
 }
+
+

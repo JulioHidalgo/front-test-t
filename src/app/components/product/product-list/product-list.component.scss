@@ -31,4 +31,30 @@ tr.mat-mdc-header-row.mdc-data-table__header-row.cdk-header-row {
   }
 }
 
+.price-cell {
+  white-space: nowrap;
+  
+  .price-amount {
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+    margin-right: 8px;
+  }
+  
+  app-price-status {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.actions-cell {
+  white-space: nowrap;
+  
+  .mat-icon-button {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 4px;
+  }
+}
+
 
