@@ -1,0 +1,27 @@
+<mat-toolbar color="primary" class="mat-elevation-z8 custom-toolbar">
+  <span (click)="drawer.toggle()" mat-icon-button class="icon">
+    <mat-icon>menu</mat-icon>
+  </span>
+  <span> Aplicación de administración de productos</span>
+  <span class="example-spacer"></span>
+</mat-toolbar>
+
+<mat-sidenav-container autosize>
+  <mat-sidenav #drawer opened="true" mode="side" position="start">
+    <mat-nav-list>
+      <mat-list-item>
+        <span routerLink="" mat-button><mat-icon>home</mat-icon> Home</span>
+      </mat-list-item>
+      <mat-list-item>
+        <span routerLink="create" mat-button><mat-icon>add</mat-icon> Crear</span>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div style="text-align: center; min-height: 600px;">
+      <app-product-list [products]="products"></app-product-list>
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

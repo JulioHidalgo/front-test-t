@@ -1,0 +1,51 @@
+mat-sidenav {
+  width: 200px; 
+  background-color: #f8f8f8; 
+  color: gray; 
+
+  mat-nav-list {
+    padding-top: 16px;
+
+    mat-list-item {
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1); 
+      }
+
+      span {
+        display: flex;
+        align-items: center;
+        color: black; 
+        width: 100%;
+        text-align: left;
+        padding: 8px 16px; 
+        text-decoration: none;
+
+        mat-icon {
+          margin-right: 38px;
+        }
+      }
+    }
+  }
+}
+
+mat-toolbar {
+  background-color: #3f51b5;
+  color: white;
+}
+
+
+span.icon {
+    margin: 10px;
+    cursor: pointer;
+}
+
+mat-sidenav-content {
+  padding: 16px;
+}
+
+::ng-deep .mat-toolbar.custom-toolbar {
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
+}
+

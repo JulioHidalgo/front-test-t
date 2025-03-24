@@ -1,0 +1,12 @@
+<!-- <div [ngClass]="statusColor" class="status-container">
+  <span class="status-circle"></span>
+  {{ data }}
+</div> -->
+
+<div [ngClass]="{
+  'status-barato': status === 'barato',
+  'status-medio': status === 'medio',
+  'status-caro': status === 'caro'
+}">
+  {{ status }}
+</div>

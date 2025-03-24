@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { StatusColor } from './status-color';
+import { StatusColor } from '../../shared/status/status-color';
 
 @Component({
   selector: 'app-status',
@@ -12,4 +12,7 @@ import { StatusColor } from './status-color';
 export class StatusComponent {
   @Input() data!: string | number;
   @Input() statusColor: StatusColor = StatusColor.info;
+  status: any;
 }
+
+
