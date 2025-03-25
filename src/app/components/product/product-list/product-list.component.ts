@@ -9,7 +9,7 @@ import { PopupComponent } from '../popup/popup.component';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { StatusComponent } from '../../shared/status/status.component';
-
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -28,7 +28,7 @@ import { StatusComponent } from '../../shared/status/status.component';
 })
 export class ProductListComponent implements OnInit {
   productlist!: Product[];
-  dataSource: any;
+  dataSource = new MatTableDataSource<Product>([]);
   displayedColumns: string[] = ["title", "description", "price", "category", "status", "actions"];
   @Input() products: Product[] = [];
   searchText: string = '';
@@ -54,6 +54,7 @@ export class ProductListComponent implements OnInit {
     this.productService.getProducts().subscribe({
       next: (data: Product[]) => {
         this.products = data;
+        this.dataSource.data = data;
       },
       error: (err) => {
         console.error('Error al cargar los productos', err);
@@ -71,6 +72,7 @@ export class ProductListComponent implements OnInit {
       this.productService.deleteProduct(productId).subscribe({
         next: () => {
           this.products = this.products.filter(product => product.id !== productId);
+          this.dataSource.data = this.products;
           console.log('Producto eliminado correctamente');
         },
         error: (err: any) => {
@@ -80,15 +82,11 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  Filterchange(data: Event) {
-    const value = (data.target as HTMLInputElement).value;
-    this.dataSource.filter = value;
-  }
-
   applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.searchText = filterValue;
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+  
 
   addproduct() {
     this.Openpopup(0, 'Agregar Producto', PopupComponent);

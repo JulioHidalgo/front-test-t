@@ -5,9 +5,7 @@ import { ProductService } from '../../../services/product.service';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material.module';
-import { Observable } from 'rxjs';
-import { Product } from '../../../models/product.model';
-import { environment } from '../../../../environments/environment';
+
 
 @Component({
   selector: 'app-popup',

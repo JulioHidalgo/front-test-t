@@ -57,4 +57,30 @@ tr.mat-mdc-header-row.mdc-data-table__header-row.cdk-header-row {
   }
 }
 
+.search-field {
+  width: 100%;
+  max-width: 500px;
+  margin: 16px;
+}
+
+.no-results {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: rgba(0, 0, 0, 0.54);
+
+  mat-icon {
+    margin-right: 8px;
+  }
+}
+
+mat-table {
+  width: 100%;
+}
+
+mat-icon-button {
+  margin: 0 4px;
+}
+
 
