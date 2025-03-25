@@ -12,32 +12,30 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  // Obtener todos los productos
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl);
   }
 
-  // Obtener un producto por ID
   getProductById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 
-  // Crear un producto
-  createProduct(productData: {
-    title: string;
-    price: number;
-    description: string;
-    category: number;
-  }): Observable<Product> {
-    
-    const apiProductData = {
-      title: productData.title,
-      price: productData.price,
-      description: productData.description,
-      category: productData.category,
+// Crear un producto 
+  createProduct(productData: Product): Observable<Product> {
+    const categoryMap: Record<string, number> = {
+      'Electronics': 1,
+      'Clothes': 2,
+      'Furniture': 3,
+      'Toys': 4,
+      'Others': 5
     };
   
-    return this.http.post<Product>(this.apiUrl, apiProductData);
+    const apiProduct = {
+      ...productData,
+      category: categoryMap[productData.category] || 5
+    };
+  
+    return this.http.post<Product>(this.apiUrl, apiProduct);
   }
 
   // Actualizar un producto 

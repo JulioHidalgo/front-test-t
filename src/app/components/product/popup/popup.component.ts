@@ -5,6 +5,9 @@ import { ProductService } from '../../../services/product.service';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material.module';
+import { Observable } from 'rxjs';
+import { Product } from '../../../models/product.model';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-popup',
@@ -35,7 +38,7 @@ export class PopupComponent implements OnInit {
       title: this.buildr.control(''),
       description: this.buildr.control(''),
       price: this.buildr.control(''),
-      categoryId: this.buildr.control(''),
+      category: this.buildr.control(''),
       status: this.buildr.control(true)
     });
   }
@@ -55,7 +58,7 @@ export class PopupComponent implements OnInit {
         title: this.editdata.title,
         description: this.editdata.description,
         price: this.editdata.price,
-        categoryId: this.editdata.categoryId,
+        category: this.editdata.category,
         status: this.editdata.status
       });
     });
@@ -66,25 +69,25 @@ export class PopupComponent implements OnInit {
   }
 
   
-createProduct(): void {
-  if (this.myform.valid) {
-    const productData = {
-      title: this.myform.value.title,
-      price: Number(this.myform.value.price),
-      description: this.myform.value.description,
-      category: Number(this.myform.value.category), 
-
-    };
-
-    this.service.createProduct(productData).subscribe({
-      next: (newProduct) => {
-        this.ref.close(newProduct);
-      },
-      error: (err) => {
-        console.error('Error creating product', err);
-      }
-    });
+  createProduct(): void {
+    if (this.myform.valid) {
+      const productData = {
+        title: this.myform.value.title,
+        price: Number(this.myform.value.price),
+        description: this.myform.value.description,
+        category: this.myform.value.category,
+      };
+  
+      this.service.createProduct(this.data).subscribe({
+        next: (newProduct) => {
+          this.ref.close(newProduct); 
+        },
+        error: (err) => {
+          console.error('Error creating product', err);
+        }
+      });
+    }
   }
-}
 
 }
+
