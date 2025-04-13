@@ -20,22 +20,25 @@ export class ProductService {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 
-// Crear un producto 
-  createProduct(productData: Product): Observable<Product> {
-    const categoryMap: Record<string, number> = {
-      'Electronics': 1,
-      'Clothes': 2,
+  // Crear un producto 
+  createProduct(productData: Omit<Product, 'id'>, images: string[] = []): Observable<Product> {
+    const categoryNameToId: Record<string, number> = {
+      'Clothes': 1,
+      'Electronics': 2,
       'Furniture': 3,
       'Toys': 4,
       'Others': 5
     };
   
-    const apiProduct = {
-      ...productData,
-      category: categoryMap[productData.category] || 5
+    const requestBody = {
+      title: productData.title,
+      price: productData.price,
+      description: productData.description,
+      categoryId: categoryNameToId[productData.category] || 5,
+      images: images
     };
   
-    return this.http.post<Product>(this.apiUrl, apiProduct);
+    return this.http.post<Product>(this.apiUrl, requestBody);
   }
 
   // Actualizar un producto 

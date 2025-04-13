@@ -1,11 +1,11 @@
+
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductService } from '../../../services/product.service';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material.module';
-
+import { Product } from '../../../models/product.model';
 
 @Component({
   selector: 'app-popup',
@@ -21,71 +21,84 @@ import { MaterialModule } from '../../material.module';
 export class PopupComponent implements OnInit {
   inputdata: any;
   editdata: any;
-  closemessage = 'closed using directive';
   myform: FormGroup;
-  
+  isLoading = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private ref: MatDialogRef<PopupComponent>,
     private buildr: FormBuilder,
     private service: ProductService,
-    private http: HttpClient,
   ) {
     this.myform = this.buildr.group({
-      title: this.buildr.control(''),
-      description: this.buildr.control(''),
-      price: this.buildr.control(''),
-      category: this.buildr.control(''),
-      status: this.buildr.control(true)
+      title: ['', [Validators.required, Validators.maxLength(100)]],
+      description: ['', [Validators.required, Validators.maxLength(500)]],
+      price: ['', [Validators.required, Validators.min(0), Validators.max(100000)]],
+      category: ['', Validators.required],
+      status: [true]
     });
   }
-
 
   ngOnInit(): void {
     this.inputdata = this.data;
     if (this.inputdata.code > 0) { 
-      this.setpopupdata(this.inputdata.code);
+      this.loadProductData(this.inputdata.code);
     }
   }
 
-  setpopupdata(id: any) {
-    this.service.getProductById(id).subscribe(item => {
-      this.editdata = item;
-      this.myform.setValue({
-        title: this.editdata.title,
-        description: this.editdata.description,
-        price: this.editdata.price,
-        category: this.editdata.category,
-        status: this.editdata.status
-      });
+  loadProductData(id: number): void {
+    this.isLoading = true;
+    this.service.getProductById(id).subscribe({
+      next: (item) => {
+        this.editdata = item;
+        this.myform.patchValue({
+          title: this.editdata.title,
+          description: this.editdata.description,
+          price: this.editdata.price,
+          category: this.editdata.category,
+          status: this.editdata.status
+        });
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error loading product data:', err);
+        this.isLoading = false;
+      }
     });
   }
 
-  closepopup() {
-    this.ref.close('Closed using function');
+  closepopup(): void {
+    this.ref.close();
   }
 
-  
-  createProduct(): void {
-    if (this.myform.valid) {
-      const productData = {
-        title: this.myform.value.title,
-        price: Number(this.myform.value.price),
-        description: this.myform.value.description,
-        category: this.myform.value.category,
-      };
-  
-      this.service.createProduct(this.data).subscribe({
-        next: (newProduct) => {
-          this.ref.close(newProduct); 
-        },
-        error: (err) => {
-          console.error('Error creating product', err);
-        }
-      });
+  saveProduct(): void {
+    if (this.myform.invalid) {
+      this.myform.markAllAsTouched();
+      return;
     }
+
+    this.isLoading = true;
+    const formData = this.myform.value;
+    const productData: Omit<Product, 'id'> = {
+      title: formData.title,
+      price: Number(formData.price),
+      description: formData.description,
+      category: formData.category
+    };
+
+    const operation = this.inputdata.code > 0
+      ? this.service.updateProduct(this.inputdata.code, { ...productData, id: this.inputdata.code })
+      : this.service.createProduct(productData);
+
+    operation.subscribe({
+      next: (res) => {
+        this.ref.close(res);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error saving product:', err);
+        this.isLoading = false;
+      }
+    });
   }
-
 }
-

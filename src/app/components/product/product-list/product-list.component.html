@@ -2,13 +2,12 @@
   <span class="spacer"></span>
   <mat-card-header>
     <mat-form-field>
-      <input 
+    <input 
     matInput 
     (keyup)="applyFilter($event)" 
     placeholder="Filtrar por nombre, descripción, categoría o precio"
-    #input
-  >
-  <mat-icon matSuffix>search</mat-icon>
+    #input>
+    <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
     <button mat-flat-button class="custom-button" style="margin-left: 60%;" (click)="addproduct()" >Agregar Producto (+)</button>
   </mat-card-header>

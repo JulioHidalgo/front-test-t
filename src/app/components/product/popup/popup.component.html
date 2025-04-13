@@ -1,4 +1,5 @@
-<form [formGroup]="myform" (ngSubmit)="createProduct()">
+<!-- <form [formGroup]="myform" (ngSubmit)="createProduct()"> -->
+<!-- <form [formGroup]="myform" (ngSubmit)="saveProduct()">
   <h1 mat-dialog-title>{{inputdata.title}}</h1>
   <div mat-dialog-content>
     <mat-form-field appearance="fill">
@@ -31,5 +32,74 @@
       {{inputdata.code > 0 ? 'Actualizar' : 'Crear'}}
     </button>
     <button mat-raised-button type="button" (click)="closepopup()" color="warn">Cancelar</button>
+  </div>
+</form> -->
+
+
+<form [formGroup]="myform" (ngSubmit)="saveProduct()">
+  <h1 mat-dialog-title>{{inputdata.title}}</h1>
+  
+  <div mat-dialog-content>
+    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="title" required>
+      <mat-error *ngIf="myform.get('title')?.hasError('required')">
+        Título es requerido
+      </mat-error>
+      <mat-error *ngIf="myform.get('title')?.hasError('maxlength')">
+        Máximo 100 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="description" required></textarea>
+      <mat-error *ngIf="myform.get('description')?.hasError('required')">
+        Descripción es requerida
+      </mat-error>
+      <mat-error *ngIf="myform.get('description')?.hasError('maxlength')">
+        Máximo 500 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Precio</mat-label>
+      <input matInput formControlName="price" type="number" required>
+      <mat-error *ngIf="myform.get('price')?.hasError('required')">
+        Precio es requerido
+      </mat-error>
+      <mat-error *ngIf="myform.get('price')?.hasError('min')">
+        El precio debe ser positivo
+      </mat-error>
+      <mat-error *ngIf="myform.get('price')?.hasError('max')">
+        El precio máximo es $100,000
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Categoría</mat-label>
+      <mat-select formControlName="category" required>
+        <mat-option value="Clothes">Ropa</mat-option>
+        <mat-option value="Electronics">Electrónica</mat-option>
+        <mat-option value="Furniture">Muebles</mat-option>
+        <mat-option value="Toys">Juguetes</mat-option>
+        <mat-option value="Others">Otros</mat-option>
+      </mat-select>
+      <mat-error *ngIf="myform.get('category')?.invalid">
+        Categoría es requerida
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-flat-button (click)="closepopup()" color="warn">Cancelar</button>
+    <button mat-flat-button 
+            color="primary" 
+            type="submit"
+            [disabled]="myform.invalid || isLoading">
+      {{isLoading ? 'Procesando...' : (inputdata.code > 0 ? 'Actualizar' : 'Crear')}}
+    </button>
   </div>
 </form>

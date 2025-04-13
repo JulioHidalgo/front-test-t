@@ -23,6 +23,7 @@ import {MatFormFieldModule} from "@angular/material/form-field"
 import {MatSnackBarModule} from "@angular/material/snack-bar"
 import { MatChipsModule } from '@angular/material/chips'
 import { MatTooltipModule } from '@angular/material/tooltip'
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ exports:[
     MatSliderModule,
     MatTableModule,
     MatPaginatorModule,
+    MatProgressBarModule,
     MatSortModule,
     MatDatepickerModule,
     MatNativeDateModule,

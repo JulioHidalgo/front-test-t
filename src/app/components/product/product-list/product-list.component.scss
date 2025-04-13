@@ -84,3 +84,32 @@ mat-icon-button {
 }
 
 
+
+.actions-cell {
+  width: 120px;
+}
+
+.actions-container {
+  display: flex;
+  gap: 8px;
+}
+
+.action-button {
+  transition: transform 0.2s, color 0.2s;
+  
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.custom-button {
+  background-color: #3f51b5;
+  color: white;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #303f9f;
+  }
+}
+
+
